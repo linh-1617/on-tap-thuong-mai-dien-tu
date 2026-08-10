@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ôn tập MĐ26 - Thương mại điện tử | SGI</title>
+<style>
+:root{--navy:#073763;--blue:#0b5fad;--orange:#f58220;--bg:#f4f7fb;--text:#172033;--muted:#64748b;--green:#059669;--red:#dc2626;--line:#dbe4ef;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text)}
+button,select{font:inherit}
+.shell{max-width:760px;margin:18px auto;background:#fff;min-height:calc(100vh - 36px);border-radius:24px;overflow:hidden;box-shadow:0 14px 45px rgba(7,55,99,.13)}
+.header{background:linear-gradient(120deg,var(--navy),var(--blue));color:#fff;padding:22px 26px 18px;position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:14px}
+.logo{width:58px;height:44px;border-radius:12px;background:#fff;color:var(--blue);font-weight:900;display:flex;align-items:center;justify-content:center;font-size:22px;letter-spacing:-1px;box-shadow:inset 0 -4px 0 var(--orange)}
+.header h1{font-size:20px;margin:0;line-height:1.2}
+.header p{margin:4px 0 0;color:#dbeafe;font-size:12px}
+.progress-wrap{display:none;margin-top:14px}
+.progress-meta{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:#dbeafe;margin-bottom:6px;gap:12px}
+.progress{height:8px;background:rgba(255,255,255,.2);border-radius:99px;overflow:hidden}
+.progress>div{height:100%;width:0;background:#34d399;transition:width .25s}
+.screen{padding:28px}
+.hidden{display:none!important}
+.center{text-align:center}
+h2{margin:0 0 7px;font-size:25px} .subtitle{margin:0;color:var(--muted);font-size:14px;line-height:1.5}
+.form-grid{display:grid;gap:17px;margin-top:26px}
+.field label{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:#475569;margin:0 0 7px}
+select{width:100%;padding:14px 14px;border:1px solid var(--line);border-radius:13px;background:#f8fafc;color:#0f172a;outline:none}
+select:focus{border-color:#60a5fa;box-shadow:0 0 0 3px rgba(59,130,246,.13)}
+select:disabled{opacity:.55}
+.mode-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.mode-card{border:2px solid #e2e8f0;border-radius:16px;padding:15px;background:#fff;cursor:pointer;transition:.18s;text-align:left}
+.mode-card:hover{border-color:#93c5fd;transform:translateY(-1px)}
+.mode-card.active{border-color:var(--blue);background:#eff6ff;box-shadow:0 0 0 3px rgba(59,130,246,.08)}
+.mode-card strong{display:block;font-size:15px;margin-bottom:5px} .mode-card span{font-size:12px;color:var(--muted);line-height:1.4}
+.btn{border:0;border-radius:14px;padding:14px 18px;font-weight:800;cursor:pointer;transition:.15s}
+.btn-primary{background:linear-gradient(100deg,var(--blue),#2563eb);color:white;box-shadow:0 8px 18px rgba(37,99,235,.2)}
+.btn-primary:hover{filter:brightness(.97)} .btn-primary:active{transform:scale(.99)} .btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+.note{margin-top:18px;padding:13px 14px;background:#fff7ed;border:1px solid #fed7aa;border-radius:13px;color:#9a3412;font-size:12px;line-height:1.45}
+.quiz-meta{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.badge{display:inline-block;background:#eff6ff;color:#1d4ed8;padding:6px 9px;border-radius:8px;font-size:11px;font-weight:800}
+.timer{font-weight:900;font-variant-numeric:tabular-nums;color:var(--navy);background:#eef2ff;border-radius:10px;padding:7px 10px;white-space:nowrap}
+.timer.danger{color:#b91c1c;background:#fee2e2}
+.question{font-size:20px;font-weight:800;line-height:1.45;margin:8px 0 20px}
+.options{display:grid;gap:11px}
+.opt{width:100%;border:2px solid #e5e7eb;background:#fff;border-radius:14px;padding:14px 15px;text-align:left;cursor:pointer;color:#334155;line-height:1.4;transition:.15s;display:flex;gap:11px;align-items:flex-start}
+.opt:hover{border-color:#93c5fd;background:#f8fbff}
+.opt .letter{min-width:28px;height:28px;border-radius:9px;background:#eef2f7;display:flex;align-items:center;justify-content:center;font-weight:900;color:#475569}
+.opt.selected{border-color:#2563eb;background:#eff6ff} .opt.selected .letter{background:#2563eb;color:#fff}
+.opt.correct{border-color:#10b981;background:#ecfdf5;color:#047857} .opt.correct .letter{background:#10b981;color:#fff}
+.opt.wrong{border-color:#ef4444;background:#fef2f2;color:#b91c1c} .opt.wrong .letter{background:#ef4444;color:#fff}
+.opt:disabled{cursor:default}
+.feedback{display:none;margin-top:15px;padding:12px 14px;border-radius:12px;font-size:13px;font-weight:700}
+.feedback.good{display:block;background:#ecfdf5;color:#047857;border:1px solid #a7f3d0} .feedback.bad{display:block;background:#fef2f2;color:#b91c1c;border:1px solid #fecaca}
+.next{margin-top:22px;width:100%}
+.result-card{background:linear-gradient(160deg,#eff6ff,#fff);border:1px solid #bfdbfe;border-radius:22px;padding:22px;margin:20px 0}
+.big-score{font-size:54px;font-weight:950;letter-spacing:-3px;color:var(--blue)}
+.score10{font-size:18px;font-weight:800;color:#334155;margin-top:3px}
+.info-list{display:grid;gap:6px;color:#475569;font-size:14px;margin-top:15px}
+.sync{font-size:13px;color:#64748b;margin:14px 0}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-dark{background:#0f172a;color:#fff} .btn-light{background:#eef2f7;color:#334155}
+.review{margin-top:22px;text-align:left;display:none}
+.review h3{font-size:17px;margin:0 0 12px}
+.review-item{padding:14px;border:1px solid #e2e8f0;border-radius:13px;margin-bottom:10px;background:#fff}
+.review-item strong{display:block;margin-bottom:7px} .review-item .bad-txt{color:#b91c1c} .review-item .good-txt{color:#047857}
+.footer-note{padding:0 28px 24px;text-align:center;color:#94a3b8;font-size:11px}
+@media(max-width:780px){.shell{margin:0;border-radius:0;min-height:100vh}.screen{padding:22px 18px}.header{padding:18px}.mode-cards{grid-template-columns:1fr}.actions{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="header">
+    <div class="brand">
+      <div class="logo">SGI</div>
+      <div><h1>MĐ26 · THƯƠNG MẠI ĐIỆN TỬ</h1><p>Ôn tập trực tuyến · Trường Trung cấp Quốc tế Sài Gòn</p></div>
+    </div>
+    <div id="progress-wrap" class="progress-wrap">
+      <div class="progress-meta"><span id="question-count"></span><span id="header-mode"></span><span id="percent-text"></span></div>
+      <div class="progress"><div id="progress-bar"></div></div>
+    </div>
+  </header>
+
+  <main id="login-screen" class="screen">
+    <div class="center">
+      <h2>Chọn thông tin để bắt đầu</h2>
+      <p class="subtitle">Chọn lớp → chọn đúng tên → chọn hình thức ôn tập.</p>
+    </div>
+    <div class="form-grid">
+      <div class="field"><label>Lớp</label><select id="class-select"><option value="">-- Chọn lớp --</option><option value="B1">Lớp B1</option><option value="B2">Lớp B2</option><option value="B3">Lớp B3</option></select></div>
+      <div class="field"><label>Học sinh</label><select id="student-select" disabled><option value="">-- Chọn lớp trước --</option></select></div>
+      <div class="field"><label>Hình thức</label>
+        <div class="mode-cards">
+          <button type="button" class="mode-card" data-mode="lesson"><strong>📘 Ôn theo từng bài</strong><span>Làm toàn bộ câu hỏi thuộc 1 bài, xem đúng/sai ngay sau mỗi câu.</span></button>
+          <button type="button" class="mode-card" data-mode="exam"><strong>⏱️ Thi thử 40 câu</strong><span>60 phút, rút ngẫu nhiên 40 câu từ 9 bài, không hiện đáp án cho đến khi nộp.</span></button>
+        </div>
+        <input id="mode-value" type="hidden" value="">
+      </div>
+      <div id="lesson-field" class="field hidden"><label>Chọn bài ôn</label><select id="lesson-select"><option value="">-- Chọn bài --</option></select></div>
+      <button id="start-btn" class="btn btn-primary" type="button">BẮT ĐẦU ÔN TẬP</button>
+    </div>
+    <div class="note"><strong>Lưu ý:</strong> Kết quả cuối lượt sẽ được gửi về Google Sheet. Danh sách chỉ lưu mã học sinh và họ tên; ngày sinh không được đưa lên trang để hạn chế lộ dữ liệu cá nhân.</div>
+  </main>
+
+  <main id="quiz-screen" class="screen hidden">
+    <div class="quiz-meta"><div><span id="lesson-badge" class="badge"></span><div id="student-mini" style="font-size:12px;color:#64748b;margin-top:6px"></div></div><div id="timer" class="timer hidden">60:00</div></div>
+    <div id="question-text" class="question"></div>
+    <div id="options" class="options"></div>
+    <div id="feedback" class="feedback"></div>
+    <button id="next-btn" class="btn btn-primary next" type="button" disabled>TIẾP THEO</button>
+  </main>
+
+  <main id="result-screen" class="screen hidden center">
+    <h2>Hoàn thành lượt ôn tập 🎉</h2>
+    <p class="subtitle">Kết quả đã được tính tự động.</p>
+    <div class="result-card">
+      <div id="final-score" class="big-score">0/0</div>
+      <div id="final-score10" class="score10">Điểm quy đổi: 0/10</div>
+      <div id="result-info" class="info-list"></div>
+    </div>
+    <div id="sync-status" class="sync">Đang gửi kết quả...</div>
+    <div class="actions">
+      <button id="review-btn" class="btn btn-light" type="button">XEM CÂU SAI</button>
+      <button class="btn btn-dark" type="button" onclick="location.reload()">LÀM LƯỢT KHÁC</button>
+    </div>
+    <div id="review" class="review"></div>
+  </main>
+  <div class="footer-note">Ôn có chiến thuật – chốt đáp án có thần thái: 120 câu hôm nay, điểm cao ngày mai! 🚀</div>
+</div>
+
+<script>
+// URL đang dùng trong form cũ của bạn. Nếu dùng Code_Google_Sheet_TMDT.gs đi kèm,
+// hãy Deploy lại Apps Script rồi thay URL dưới đây bằng URL Web App mới.
+const GOOGLE_URL = "https://script.google.com/macros/s/AKfycbwqJyFyB4JHzF2qzV00m0Zytb7giqYp3Je-kUGJyGMpESn2vK-UjUr7pxVtzjy0F8wLSQ/exec";
+const STUDENTS = {"B1":[{"id":"20240032","name":"Đinh Phạm Thiên An"},{"id":"20240033","name":"Nguyễn Lê Thiên Ân"},{"id":"20240036","name":"Nguyễn Tài Ba"},{"id":"20240037","name":"Trần Vũ Anh Bằng"},{"id":"20240040","name":"Nguyễn Thị Ngọc Bích"},{"id":"20240047","name":"Bùi Đăng Duy"},{"id":"20240041","name":"Hồ Thị Linh Đa"},{"id":"20240043","name":"Quách Minh Đạt"},{"id":"20240049","name":"Nguyễn Trần Thanh Hiền"},{"id":"20240051","name":"Nguyễn Quốc Huy"},{"id":"20240050","name":"Lê Gia Minh Hương"},{"id":"20240053","name":"Ngô Quang Khải"},{"id":"20240054","name":"Lê Nhựt Khang"},{"id":"20240055","name":"Nguyễn Anh Khoa"},{"id":"20240058","name":"Võ Lê Tuấn Kiệt"},{"id":"20240060","name":"Mai Ngọc Hải Lam"},{"id":"20240061","name":"Lê Hoàng Lân"},{"id":"20240062","name":"Nguyễn Thùy Linh"},{"id":"20240065","name":"Hoàng Hữu Long"},{"id":"20240064","name":"Nguyễn Đức Lộc"},{"id":"20240139","name":"Nguyễn Ngọc Ly"},{"id":"20240066","name":"Trần Công Minh"},{"id":"20240070","name":"Đặng Ngọc Yến My"},{"id":"20240071","name":"Lê Thành Nam"},{"id":"20240072","name":"Trần Ánh Ngọc"},{"id":"20240079","name":"Nguyễn Tấn Phát"},{"id":"20240080","name":"Nguyễn Đình Đại Phát"},{"id":"20240086","name":"Nguyễn Trương Minh Quân"},{"id":"20240088","name":"Đỗ Thành Tài"},{"id":"20240094","name":"Ông Trần Hưng Thịnh"},{"id":"20240097","name":"Vũ Phương Uyên"}],"B2":[{"id":"20240034","name":"Đặng Sỹ Anh"},{"id":"20240104","name":"Lương Quỳnh Anh"},{"id":"20240038","name":"Trần Gia Bảo"},{"id":"20240107","name":"Mai Hải Cường"},{"id":"20240048","name":"Nguyễn Hoàng Duy"},{"id":"20240044","name":"Ngô Tấn Hòa Đạt"},{"id":"20240042","name":"Nguyễn Hoàng Khánh Đăng"},{"id":"20240109","name":"Ngô Gia Hân"},{"id":"20240052","name":"Bùi Ngọc Huy"},{"id":"20240056","name":"Nguyễn Võ Đăng Khoa"},{"id":"20240059","name":"Vũ Gia Kiệt"},{"id":"20240063","name":"Diệp Trúc Linh"},{"id":"20240067","name":"Đỗ Gia Minh"},{"id":"20240068","name":"Vũ Ngọc Minh"},{"id":"20240073","name":"Nguyễn Hoàng Bảo Ngọc"},{"id":"20240115","name":"Phạm Hoàng Khánh Ngọc"},{"id":"20240074","name":"Lê Thanh Nguyễn"},{"id":"20240077","name":"Nguyễn Hoàng Bảo Nhi"},{"id":"20240116","name":"Dương Tâm Nhi"},{"id":"20240081","name":"Lê Thọ A Phát"},{"id":"20240083","name":"Nguyễn Ảnh Phú"},{"id":"20240084","name":"Lê Tấn Phước"},{"id":"20240087","name":"Phùng Như Quỳnh"},{"id":"20240089","name":"Phan Chí Tài"},{"id":"20240090","name":"Ngô Công Tấn"},{"id":"20240091","name":"Lê Phương Thảo"},{"id":"20240092","name":"Nguyễn Gia Thiện"},{"id":"20240093","name":"Lê Minh Thiện"},{"id":"20240121","name":"Nguyễn Ngọc Thiện"},{"id":"20240095","name":"Nguyễn Thanh Tùng"},{"id":"20240098","name":"Đặng Minh Vũ"},{"id":"20240101","name":"Hoàng Hải Yến"}],"B3":[{"id":"20240035","name":"Vương Ngô Đan Anh"},{"id":"20240039","name":"Hoàng Trần Mai Anh"},{"id":"20240045","name":"Trần Nguyễn Hồng Ân"},{"id":"20240046","name":"Trương Gia Bảo"},{"id":"20240057","name":"Hồ Gia Bảo"},{"id":"20240069","name":"Lê Nguyễn Thị Thùy Dương"},{"id":"20240075","name":"Ngô Thành Đạt"},{"id":"20240078","name":"Đặng Huỳnh Duy Đạt"},{"id":"20240082","name":"Trần Ngọc Thanh Hiền"},{"id":"20240085","name":"Võ Hồ Duy Khoa"},{"id":"20240096","name":"Huỳnh Ngọc Thiên Kim"},{"id":"20240099","name":"Phạm Vương Thảo Ly"},{"id":"20240100","name":"Nguyễn Đức Mạnh"},{"id":"20240102","name":"Nguyễn Hoàng Minh"},{"id":"20240103","name":"Nguyễn Trần Diễm My"},{"id":"20240105","name":"Mai Thanh Nhàn"},{"id":"20240106","name":"Dương Thị Yến Nhi"},{"id":"20240108","name":"Nguyễn Hoàng Minh Nhựt"},{"id":"20240110","name":"Trần Tấn Phát"},{"id":"20240111","name":"Trần Nguyễn Gia Phú"},{"id":"20240112","name":"Trần Nguyễn Gia Phúc"},{"id":"20240113","name":"Phạm Trúc Phương"},{"id":"20240114","name":"Văn Tú Quyên"},{"id":"20240117","name":"Đinh Nguyễn Yến Trang"},{"id":"20240118","name":"Nguyễn Thị Thanh Trúc"},{"id":"20240119","name":"Cao Ngọc Thanh Trúc"},{"id":"20240120","name":"Nguyễn Thị Hồng Tươi"},{"id":"20240122","name":"Phạm Nguyễn Khánh Vy"},{"id":"20240125","name":"Lê Tường Vy"},{"id":"20240334","name":"Nguyễn Bảo Yến"}]};
+const LESSONS = {"1":{"title":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","count":14},"2":{"title":"BÁN HÀNG TRÊN WEB","count":13},"3":{"title":"MARKETING TRÊN WEB","count":13},"4":{"title":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","count":13},"5":{"title":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","count":13},"6":{"title":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","count":14},"7":{"title":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","count":13},"8":{"title":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","count":13},"9":{"title":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","count":14}};
+const RAW_POOL = [{"num":1,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Thương mại điện tử (TMĐT) được hiểu phù hợp nhất là gì?","a":["Chỉ là hoạt động quảng cáo sản phẩm trên mạng xã hội.","Thực hiện hoạt động thương mại, mua bán hàng hóa hoặc cung ứng dịch vụ thông qua phương tiện điện tử và mạng viễn thông.","Chỉ là hình thức thanh toán bằng thẻ ngân hàng.","Chỉ là việc quản lý kho bằng máy tính."],"c":1},{"num":2,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Mô hình B2B là giao dịch giữa những chủ thể nào?","a":["Doanh nghiệp với doanh nghiệp.","Doanh nghiệp với người tiêu dùng.","Cá nhân với cá nhân.","Cá nhân với doanh nghiệp."],"c":0},{"num":3,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Mô hình C2C là giao dịch giữa những chủ thể nào?","a":["Chính phủ với doanh nghiệp.","Doanh nghiệp với người tiêu dùng.","Cá nhân với cá nhân.","Cá nhân với doanh nghiệp."],"c":2},{"num":4,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Nội dung nào thuộc hạ tầng thanh toán của thương mại điện tử?","a":["Máy tính, website và phần mềm.","Đội ngũ marketing và kỹ thuật.","Các quy định pháp luật điều chỉnh giao dịch điện tử.","Ngân hàng điện tử, ví điện tử và cổng thanh toán."],"c":3},{"num":5,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Theo nghĩa rộng, thương mại điện tử bao gồm nội dung nào sau đây?","a":["Chỉ mua và bán hàng hóa qua website.","Tiếp thị, đặt hàng, thanh toán, chăm sóc khách hàng và cả một số hoạt động quản trị được thực hiện bằng phương tiện điện tử.","Chỉ thanh toán không dùng tiền mặt.","Chỉ quảng cáo trên công cụ tìm kiếm."],"c":1},{"num":6,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Một doanh nghiệp bán sản phẩm trực tiếp cho người tiêu dùng cuối qua website thuộc mô hình nào?","a":["C2C.","C2B.","B2C.","B2B."],"c":2},{"num":7,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Một freelancer thiết kế logo cho một doanh nghiệp là ví dụ gần nhất của mô hình nào?","a":["C2B.","B2C.","C2C.","B2B."],"c":0},{"num":8,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Điểm khác biệt nổi bật của TMĐT so với thương mại truyền thống là gì?","a":["TMĐT luôn yêu cầu người mua và người bán gặp trực tiếp.","TMĐT chỉ hoạt động trong giờ hành chính.","TMĐT chỉ sử dụng tiền mặt.","TMĐT cho phép giao dịch qua môi trường mạng, có thể diễn ra mọi lúc và mở rộng phạm vi khách hàng."],"c":3},{"num":9,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Lợi ích nổi bật của TMĐT đối với người tiêu dùng là gì?","a":["Chỉ được mua trong khu vực địa lý gần nơi ở.","Mua sắm thuận tiện, nhiều lựa chọn và dễ so sánh giá.","Không cần quan tâm đến chính sách đổi trả.","Luôn được kiểm tra trực tiếp hàng hóa trước khi thanh toán."],"c":1},{"num":10,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Theo tài liệu bài giảng, quy mô TMĐT Việt Nam năm 2025 đạt khoảng bao nhiêu?","a":["15 tỷ USD.","20 tỷ USD.","31 tỷ USD.","60 tỷ USD."],"c":2},{"num":11,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Khi sử dụng số liệu về thị trường TMĐT để học tập hoặc ra đề, cách làm phù hợp nhất là gì?","a":["Ghi rõ năm và nguồn vì thị trường thay đổi nhanh.","Chỉ cần ghi số liệu, không cần năm.","Ưu tiên số liệu không rõ nguồn nếu con số lớn.","Chỉ sử dụng bài đăng trên mạng xã hội."],"c":0},{"num":12,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Hai cá nhân mua bán một chiếc điện thoại cũ với nhau qua một sàn trung gian. Mô hình gần nhất là gì?","a":["B2B.","B2C.","C2B.","C2C."],"c":3},{"num":13,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Một nhà bán lẻ nhập số lượng lớn hàng hóa từ một doanh nghiệp cung ứng trên Alibaba. Mô hình phù hợp nhất là gì?","a":["C2C.","B2C.","B2B.","C2B."],"c":2},{"num":14,"lesson":1,"lessonTitle":"TỔNG QUAN VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Một shop mới muốn giảm rủi ro thiếu niềm tin của khách khi bán online. Biện pháp phù hợp nhất là gì?","a":["Ẩn thông tin người bán và chính sách đổi trả.","Chỉ đăng ảnh đẹp, không cần mô tả.","Yêu cầu khách chuyển tiền ngoài nền tảng.","Công khai thông tin shop, chính sách, đánh giá và kênh liên hệ rõ ràng."],"c":3},{"num":15,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Mô hình doanh thu từ việc bán trực tiếp sản phẩm hoặc dịch vụ trên website được gọi là gì?","a":["Mô hình bán hàng trực tuyến.","Mô hình quảng cáo.","Mô hình liên kết.","Mô hình thuê bao."],"c":0},{"num":16,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Mô hình affiliate tạo doanh thu chủ yếu bằng cách nào?","a":["Thu tiền từ việc cho thuê kho.","Thu phí giao hàng.","Nhận hoa hồng khi giới thiệu khách hàng cho bên khác.","Chỉ bán hàng trực tiếp."],"c":2},{"num":17,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"SKU chủ yếu được dùng để làm gì?","a":["Mã hóa mật khẩu khách hàng.","Nhận diện và quản lý sản phẩm.","Tăng lượt theo dõi cho shop.","Trang trí ảnh sản phẩm."],"c":1},{"num":18,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Trong quy trình bán hàng trên web, sau khi khách xem chi tiết sản phẩm và quyết định mua, thao tác phù hợp tiếp theo là gì?","a":["Xóa sản phẩm khỏi hệ thống.","Đóng gói ngay khi chưa có đơn.","Yêu cầu khách đánh giá sản phẩm.","Thêm sản phẩm vào giỏ hàng và tiến hành thanh toán."],"c":3},{"num":19,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Thông tin nào giúp tăng niềm tin của khách hàng khi mua trên web?","a":["Ẩn thông tin liên hệ.","Công khai thông tin shop, đánh giá và chính sách rõ ràng.","Không công bố chính sách đổi trả.","Chỉ dùng ảnh lấy từ nơi khác."],"c":1},{"num":20,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Khi tồn kho trên website không khớp với thực tế, rủi ro dễ xảy ra nhất là gì?","a":["Tăng tốc độ tải trang.","Giảm phí vận chuyển.","Phải hủy đơn và làm khách hàng không hài lòng.","SEO tự động tốt hơn."],"c":2},{"num":21,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Sau khi khách nhập địa chỉ giao hàng và chọn phương thức thanh toán, hệ thống nên làm gì?","a":["Xác nhận đơn và gửi thông báo cho khách cùng người bán.","Xóa thông tin sản phẩm.","Tự động đổi giá bán.","Yêu cầu khách tạo lại tài khoản."],"c":0},{"num":22,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Mô hình phí giao dịch/thuê bao tạo doanh thu theo cách nào?","a":["Chỉ bằng quảng cáo hình ảnh.","Chỉ từ bán sản phẩm trực tiếp.","Chỉ từ tài trợ của đối tác.","Thu phí trên mỗi giao dịch hoặc thu phí thành viên định kỳ."],"c":3},{"num":23,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Website cho thương hiệu khác đặt banner và thu tiền hiển thị quảng cáo đang áp dụng mô hình nào?","a":["Mô hình quảng cáo.","Mô hình C2C.","Mô hình đấu giá.","Mô hình vận chuyển."],"c":0},{"num":24,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Shop vẫn hiển thị 'còn hàng' trong khi kho thực tế đã hết. Cách xử lý phù hợp nhất là gì?","a":["Tăng giá sản phẩm.","Đồng bộ và cập nhật tồn kho kịp thời giữa hệ thống và thực tế.","Tắt toàn bộ đánh giá của khách.","Yêu cầu khách tự kiểm tra kho."],"c":1},{"num":25,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Khách vừa đặt một đơn hàng. Người bán nên ưu tiên thực hiện bước nào?","a":["Đổi tên sản phẩm.","Xóa lịch sử đơn.","Xác nhận đơn và kiểm tra tồn kho trước khi đóng gói.","Yêu cầu khách đặt lại đơn khác."],"c":2},{"num":26,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Trong bài thực hành dựng shop mini, bộ thông tin sản phẩm nào đầy đủ và phù hợp nhất?","a":["Chỉ có tên và ảnh.","Chỉ có tên, giá và lượt thích.","Tên, mật khẩu người mua và OTP.","Tên, SKU, giá, tồn kho, mô tả và ảnh hợp pháp."],"c":3},{"num":27,"lesson":2,"lessonTitle":"BÁN HÀNG TRÊN WEB","q":"Khách đã thanh toán nhưng sau đó bị báo hủy vì sản phẩm thực tế hết hàng. Vấn đề chính nằm ở đâu?","a":["Quản lý và đồng bộ tồn kho.","Tối ưu tiêu đề SEO.","Màu sắc logo.","Số lượng bài đăng mạng xã hội."],"c":0},{"num":28,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"SEO là gì?","a":["Kỹ thuật tự động thu tiền từ khách.","Tập hợp kỹ thuật giúp website xuất hiện tốt hơn trong kết quả tìm kiếm tự nhiên.","Phần mềm quản lý kho.","Một hình thức giao hàng nhanh."],"c":1},{"num":29,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"SEO thường được chia thành hai nhóm chính nào?","a":["B2B và B2C.","Online và offline.","Email và SMS.","On-page và off-page."],"c":3},{"num":30,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"CTR phản ánh điều gì?","a":["Tỷ lệ người nhấp sau khi nhìn thấy nội dung.","Số lượng sản phẩm trong kho.","Số lần đổi trả hàng.","Giá trị trung bình một đơn hàng."],"c":0},{"num":31,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"CTA là gì?","a":["Mã sản phẩm.","Cổng thanh toán.","Lời kêu gọi hành động.","Chính sách bảo mật."],"c":2},{"num":32,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"Nhận định nào đúng khi so sánh SEO và quảng cáo tìm kiếm trả phí (SEM)?","a":["SEO luôn có kết quả ngay lập tức.","SEO hướng đến lưu lượng tự nhiên và cần thời gian; SEM cho kết quả nhanh hơn nhưng phải trả phí.","SEO không cần nội dung.","SEM không phát sinh chi phí."],"c":1},{"num":33,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"Email marketing nên ưu tiên gửi đến nhóm nào?","a":["Mọi địa chỉ email tìm được trên Internet.","Các tài khoản giả.","Chỉ những người chưa từng quan tâm.","Danh sách email hợp lệ, có sự đồng ý phù hợp và có khả năng quan tâm."],"c":3},{"num":34,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"Khi xây dựng chiến lược marketing trực tuyến, việc nào cần làm sớm?","a":["Xác định khách hàng mục tiêu và lựa chọn kênh tiếp cận phù hợp.","Mua thật nhiều tương tác ảo.","Gửi cùng một nội dung cho mọi đối tượng.","Chỉ tập trung vào số lượt xem."],"c":0},{"num":35,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"Tỷ lệ chuyển đổi trong marketing cho biết điều gì?","a":["Bao nhiêu ảnh được đăng mỗi ngày.","Bao nhiêu sản phẩm đang tồn kho.","Bao nhiêu người thực hiện hành động mong muốn như đặt hàng hoặc điền biểu mẫu.","Bao nhiêu nhân viên dùng phần mềm."],"c":2},{"num":36,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"Một tiêu đề SEO cho trang sản phẩm nên có đặc điểm nào?","a":["Không cần chứa từ khóa.","Chứa từ khóa tự nhiên, hấp dẫn và thường dưới khoảng 60 ký tự theo bài thực hành.","Càng dài càng tốt.","Chỉ viết bằng chữ in hoa."],"c":1},{"num":37,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"Một quảng cáo có 20.000 lượt xem nhưng chỉ 10 người nhấp vào trang sản phẩm. Hướng cải thiện phù hợp nhất là gì?","a":["Tăng số chữ lên thật nhiều.","Không cần thay đổi vì lượt xem đã cao.","Mua thêm lượt tương tác ảo.","Điều chỉnh tiêu đề, hình ảnh, CTA và nhóm khách hàng mục tiêu."],"c":3},{"num":38,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"Meta description cho một trang sản phẩm theo bài thực hành nên được viết thế nào?","a":["Khoảng 1-2 câu, có từ khóa tự nhiên và dưới khoảng 160 ký tự.","Chỉ gồm tên miền website.","Không cần liên quan đến sản phẩm.","Dài trên 500 ký tự để chứa nhiều từ khóa."],"c":0},{"num":39,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"AI gợi ý một tiêu đề quảng cáo rất hấp dẫn nhưng chưa rõ độ chính xác. Người làm marketing nên làm gì?","a":["Đăng ngay vì AI luôn đúng.","Sao chép nội dung của đối thủ.","Kiểm tra tính đúng, bản quyền và sự phù hợp với giọng thương hiệu trước khi dùng.","Thêm các cam kết tuyệt đối để tăng lượt nhấp."],"c":2},{"num":40,"lesson":3,"lessonTitle":"MARKETING TRÊN WEB","q":"Một nhóm mua hàng nghìn lượt thích giả để làm đẹp báo cáo chiến dịch. Hành động này trái với nguyên tắc nào của bài học?","a":["Luôn tăng ngân sách quảng cáo.","Đo đúng mục tiêu và không mua tương tác ảo.","Chỉ dùng email marketing.","Chỉ tối ưu SEO off-page."],"c":1},{"num":41,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Social commerce là gì?","a":["Bán hàng kết hợp tương tác trên mạng xã hội.","Chỉ gửi email quảng cáo.","Chỉ bán tại cửa hàng vật lý.","Chỉ lưu dữ liệu ngoại tuyến."],"c":0},{"num":42,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"M-commerce là gì?","a":["Giao dịch chỉ qua máy tính bàn.","Hình thức bán hàng chỉ dùng tiền mặt.","Thực hiện giao dịch TMĐT qua thiết bị di động như điện thoại thông minh, máy tính bảng.","Một hình thức đấu giá truyền thống."],"c":2},{"num":43,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Trong đấu giá trực tuyến, người thắng thường là ai?","a":["Người đăng ký tài khoản sớm nhất.","Người trả giá hợp lệ cao nhất khi thời gian đấu giá kết thúc.","Người có nhiều lượt theo dõi nhất.","Người bán sản phẩm."],"c":1},{"num":44,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Tính năng thông báo đẩy (push notification) trên ứng dụng di động có thể dùng để làm gì?","a":["Thay thế hoàn toàn hệ thống thanh toán.","Xóa dữ liệu khách hàng.","Tự động giao hàng.","Nhắc nhở hoặc gửi ưu đãi trực tiếp đến khách hàng."],"c":3},{"num":45,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Trình tự nào phù hợp với việc triển khai bán hàng trên mạng xã hội?","a":["Tạo trang - đăng nội dung - tiếp cận/quảng cáo - tương tác - chốt đơn - chăm sóc sau bán.","Chốt đơn trước - tạo trang sau - xóa thông tin liên hệ.","Chỉ đăng ảnh rồi chờ khách tự liên hệ.","Chỉ chạy quảng cáo, không cần trả lời khách."],"c":0},{"num":46,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Vì sao m-commerce giúp tăng tính linh hoạt cho người mua?","a":["Vì chỉ sử dụng tại cửa hàng.","Vì không cần kết nối mạng.","Vì có thể mua sắm mọi lúc, mọi nơi bằng thiết bị di động.","Vì bắt buộc thanh toán tiền mặt."],"c":2},{"num":47,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Khi làm tiếp thị liên kết, nội dung nào cần minh bạch?","a":["Mật khẩu tài khoản người bán.","Vai trò người giới thiệu và mã hoặc đường dẫn tiếp thị liên kết khi có hoa hồng.","OTP ngân hàng.","Thông tin riêng của khách hàng."],"c":1},{"num":48,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Người livestream nên xử lý các khẳng định về công dụng sản phẩm như thế nào?","a":["Có thể nói bất kỳ điều gì nếu giúp tăng đơn.","Luôn dùng từ '100%' để tạo tin tưởng.","Không cần quan tâm đến nguồn thông tin.","Chỉ nêu thông tin có căn cứ kiểm chứng và tránh thổi phồng."],"c":3},{"num":49,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Trong quy trình đấu giá trực tuyến, người bán cần thiết lập gì trước khi người mua bắt đầu đặt giá?","a":["Sản phẩm, giá khởi điểm và thời gian đấu giá.","Mật khẩu của người mua.","OTP thanh toán của khách.","Kết quả người thắng trước khi đấu giá."],"c":0},{"num":50,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Một KOC nói 'sản phẩm chữa khỏi 100%' nhưng không có tài liệu chứng minh. Cách sửa phù hợp nhất là gì?","a":["Giữ nguyên vì đây chỉ là lời nói vui.","Tăng thêm các cam kết tuyệt đối.","Thay bằng mô tả trung thực, có căn cứ và nêu rõ giới hạn của thông tin.","Xóa chính sách đổi trả khỏi nội dung."],"c":2},{"num":51,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Một kịch bản livestream 60 giây phù hợp với bài thực hành nên có nội dung nào?","a":["Chỉ tên sản phẩm và giá.","Mở đầu, lợi ích, bằng chứng, giá/ưu đãi, CTA và thông tin đổi trả.","Chỉ lời kêu gọi mua ngay.","Mật khẩu tài khoản bán hàng."],"c":1},{"num":52,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Ứng dụng mua sắm gợi ý cửa hàng và ưu đãi gần nơi người dùng đang đứng. Tính năng này khai thác đặc điểm nào của m-commerce?","a":["Đấu giá.","Email marketing.","Lưu trữ ngoại tuyến.","Định vị."],"c":3},{"num":53,"lesson":4,"lessonTitle":"MẠNG XÃ HỘI, THƯƠNG MẠI DI ĐỘNG, ĐẤU GIÁ TRỰC TUYẾN","q":"Trong một phiên đấu giá, giá cao nhất vừa thay đổi sau khi có người đặt bid mới. Hệ thống nên làm gì?","a":["Cập nhật giá cao nhất theo thời gian thực.","Ẩn toàn bộ thông tin giá.","Kết thúc phiên ngay lập tức.","Tự chọn người thắng bất kỳ."],"c":0},{"num":54,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Chức năng nào thuộc nhóm cơ bản của phần mềm TMĐT?","a":["Dự báo thời tiết.","Quản lý danh mục sản phẩm.","Biên tập video chuyên nghiệp.","Thiết kế mạch điện."],"c":1},{"num":55,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Chức năng nào thuộc nhóm nâng cao của phần mềm TMĐT?","a":["Quản lý bàn phím máy tính.","Vẽ sơ đồ điện.","Báo cáo, thống kê doanh thu và phân tích dữ liệu bán hàng.","Tạo hệ điều hành."],"c":2},{"num":56,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Doanh nghiệp vừa và nhỏ thường ưu tiên loại giải pháp nào?","a":["Nền tảng dựng sẵn, mã nguồn mở hoặc SaaS dễ triển khai.","Luôn tự xây hệ thống rất lớn từ đầu.","Không cần phần mềm.","Chỉ quản lý bằng giấy."],"c":0},{"num":57,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Chi tiết đơn hàng nên lưu nhóm dữ liệu nào?","a":["Mật khẩu khách hàng và OTP.","Lịch sử trình duyệt.","Mã PIN thẻ ngân hàng.","Sản phẩm, số lượng, đơn giá và giảm giá."],"c":3},{"num":58,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Vì sao doanh nghiệp lớn thường cần giải pháp phần mềm tùy biến hơn doanh nghiệp nhỏ?","a":["Vì không cần quản lý dữ liệu.","Vì cần khả năng mở rộng cao và tích hợp với các hệ thống như ERP/CRM.","Vì luôn có ít đơn hàng hơn.","Vì không dùng Internet."],"c":1},{"num":59,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Khi thêm một sản phẩm mới vào phần mềm TMĐT, nhóm thông tin nào phù hợp?","a":["Tên sản phẩm, SKU, giá, danh mục, tồn kho và ảnh.","OTP, mật khẩu và mã PIN của khách.","Chỉ màu logo của shop.","Chỉ tên sản phẩm."],"c":0},{"num":60,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Omni-channel có nghĩa gần nhất là gì?","a":["Chỉ bán qua một kênh duy nhất.","Không quản lý tồn kho.","Bán hàng phối hợp qua nhiều kênh.","Chỉ bán ngoại tuyến."],"c":2},{"num":61,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Dữ liệu nào không nên được lưu ở dạng rõ trong hệ thống shop?","a":["Mã SKU.","Số lượng tồn kho.","Trạng thái vận chuyển.","Mật khẩu hoặc OTP."],"c":3},{"num":62,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Một bản ghi sản phẩm cốt lõi nên có thêm thông tin nào ngoài tên và giá?","a":["Mật khẩu khách hàng.","SKU, danh mục, tồn kho, ảnh và trạng thái hiển thị.","OTP ngân hàng.","Lịch sử cuộc gọi của người mua."],"c":1},{"num":63,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Khách đặt 02 sản phẩm nhưng báo cáo doanh thu chỉ ghi 01 sản phẩm và tồn kho không giảm. Dữ liệu nào cần ưu tiên đối chiếu?","a":["Chỉ màu giao diện.","Chỉ tên khách hàng.","Chi tiết đơn hàng và dữ liệu tồn kho, đồng thời đối chiếu đơn hàng liên quan.","Chỉ logo của shop."],"c":2},{"num":64,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Sau khi đã thêm sản phẩm vào gian hàng thử nghiệm, bước thực hành nào giúp kiểm tra quy trình xử lý đơn?","a":["Tạo một đơn hàng thử bằng tài khoản khách rồi vào trang quản trị cập nhật trạng thái.","Xóa toàn bộ sản phẩm.","Đổi mật khẩu của khách.","Tắt hệ thống thanh toán."],"c":0},{"num":65,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Một doanh nghiệp nhỏ muốn triển khai nhanh, chi phí thấp và dễ sử dụng. Lựa chọn phù hợp nhất là gì?","a":["Tự xây hệ thống quy mô rất lớn ngay từ đầu.","Không dùng phần mềm.","Chỉ sử dụng bảng giấy.","Chọn nền tảng dựng sẵn hoặc SaaS phù hợp."],"c":3},{"num":66,"lesson":5,"lessonTitle":"PHẦN MỀM THƯƠNG MẠI ĐIỆN TỬ","q":"Tổng tiền đơn hàng bị sai do số lượng của một mặt hàng ghi không đúng. Nên kiểm tra nhóm dữ liệu nào trước?","a":["Thông tin ảnh đại diện shop.","Chi tiết đơn hàng.","Danh sách email marketing.","Màu sắc giao diện."],"c":1},{"num":67,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Thanh toán trực tuyến là gì?","a":["Chỉ trả tiền mặt khi nhận hàng.","Chỉ chuyển tiền tại quầy ngân hàng.","Chi trả cho hàng hóa, dịch vụ qua phương tiện điện tử mà không sử dụng tiền mặt trực tiếp.","Chỉ dùng thẻ tín dụng quốc tế."],"c":2},{"num":68,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Một giao dịch thanh toán trực tuyến qua cổng thanh toán thường có các bên nào?","a":["Khách hàng, website bán hàng, cổng thanh toán trung gian và ngân hàng.","Chỉ khách hàng và shipper.","Chỉ người bán và cơ quan thuế.","Chỉ mạng xã hội và khách hàng."],"c":0},{"num":69,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Thẻ ghi nợ (debit) thường chi tiêu từ đâu?","a":["Khoản vay không giới hạn.","Điểm thưởng trên mạng xã hội.","Tồn kho sản phẩm.","Số tiền có trong tài khoản liên kết."],"c":3},{"num":70,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"E-banking bao gồm các hình thức phổ biến nào?","a":["Chỉ thanh toán tiền mặt.","Internet Banking và Mobile Banking.","Chỉ COD.","Chỉ mua bán tại quầy."],"c":1},{"num":71,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Trình tự nào phù hợp với quy trình thanh toán trực tuyến qua cổng thanh toán?","a":["Ngân hàng -> shipper -> khách -> website.","Khách -> giao hàng -> quảng cáo -> website.","Website -> cổng thanh toán -> xác thực qua ngân hàng/ví -> trả kết quả về website.","Website -> kho -> mạng xã hội -> ngân hàng."],"c":2},{"num":72,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Thanh toán bằng mã QR thường được thực hiện thông qua đâu?","a":["Ứng dụng ngân hàng hoặc ví điện tử.","Chỉ bằng tiền mặt.","Phần mềm chỉnh sửa ảnh.","Trình phát video."],"c":0},{"num":73,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Thông tin nào tuyệt đối không nên cung cấp cho người khác khi thanh toán?","a":["Tên sản phẩm.","Mã đơn hàng công khai.","Thời gian giao hàng dự kiến.","OTP, mật khẩu, mã PIN hoặc thông tin thẻ đầy đủ."],"c":3},{"num":74,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Khách gửi ảnh chụp màn hình báo đã chuyển khoản. Người bán nên xử lý thế nào?","a":["Giao hàng ngay vì ảnh là bằng chứng tuyệt đối.","Đối soát trên hệ thống hoặc kênh ngân hàng chính thức trước khi giao hàng.","Yêu cầu khách gửi OTP.","Xóa đơn hàng."],"c":1},{"num":75,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Khi giao dịch báo lỗi, cách xử lý nào phù hợp?","a":["Bấm thanh toán liên tục cho đến khi thành công.","Bỏ qua hoàn toàn trạng thái giao dịch.","Lưu mã giao dịch và thời gian để tra soát, tránh thanh toán lặp nhiều lần.","Gửi mật khẩu cho bên hỗ trợ không xác định."],"c":2},{"num":76,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Theo tài liệu, khi đề cập tài sản mã hóa trong thanh toán, cách tiếp cận phù hợp là gì?","a":["Không tự ý dùng tài sản mã hóa làm phương tiện thanh toán; trong lớp chỉ dùng môi trường mô phỏng.","Bắt buộc học sinh nạp tiền thật.","Dùng chung tài khoản của giáo viên.","Chia sẻ khóa ví cho cả lớp."],"c":0},{"num":77,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Khách nói đã chuyển tiền và gửi ảnh chụp, nhưng hệ thống chưa có thông báo tiền vào. Nhân viên nên làm gì?","a":["Giao hàng ngay để giữ khách.","Yêu cầu khách đọc OTP.","Tự tạo thông báo giả.","Tạm chưa giao hàng và đối soát bằng kênh chính thức."],"c":3},{"num":78,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Trong giờ thực hành, cách tổ chức thanh toán an toàn nhất là gì?","a":["Bắt buộc dùng tiền thật.","Dùng môi trường mô phỏng hoặc dừng trước bước xác nhận thanh toán thật.","Dùng tài khoản ngân hàng của giáo viên cho cả lớp.","Dùng mật khẩu chung."],"c":1},{"num":79,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Khi quét QR, màn hình hiển thị tên người nhận không đúng với bên bán dự kiến. Hành động phù hợp nhất là gì?","a":["Vẫn thanh toán vì QR luôn chính xác.","Chụp ảnh rồi gửi OTP cho người bán.","Dừng giao dịch và xác minh lại người nhận qua kênh chính thức.","Nhập số tiền lớn hơn để thử."],"c":2},{"num":80,"lesson":6,"lessonTitle":"HỆ THỐNG THANH TOÁN ĐIỆN TỬ","q":"Bạn bấm thanh toán nhưng giao dịch treo, chưa rõ thành công hay thất bại. Cách xử lý phù hợp là gì?","a":["Không bấm lặp liên tiếp; lưu mã, thời gian và kiểm tra trạng thái để tra soát.","Bấm lại càng nhiều lần càng tốt.","Xóa ứng dụng ngay.","Gửi mã PIN cho người hỗ trợ qua tin nhắn."],"c":0},{"num":81,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Nguyên tắc bảo mật (Confidentiality) có ý nghĩa gì?","a":["Dữ liệu phải được thay đổi thường xuyên.","Thông tin chỉ được người có quyền truy cập.","Mọi người đều được xem dữ liệu.","Không cần xác thực người dùng."],"c":1},{"num":82,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Nguyên tắc toàn vẹn (Integrity) có ý nghĩa gì?","a":["Dữ liệu luôn phải công khai.","Dữ liệu phải bị xóa sau giao dịch.","Dữ liệu không bị thay đổi trái phép.","Người bán có thể sửa giao dịch tùy ý."],"c":2},{"num":83,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Nguyên tắc xác thực (Authentication) nhằm mục đích gì?","a":["Xác minh đúng danh tính các bên tham gia.","Tăng giá sản phẩm.","Xóa lịch sử đơn hàng.","Tạo mã giảm giá."],"c":0},{"num":84,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Chống chối bỏ (Non-repudiation) nhằm bảo đảm điều gì?","a":["Mọi dữ liệu đều được công khai.","Không cần lưu bằng chứng giao dịch.","Chỉ người bán có quyền xác nhận.","Các bên không thể phủ nhận một giao dịch đã thực hiện khi có căn cứ xác minh phù hợp."],"c":3},{"num":85,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Mã hóa (encryption) giúp bảo vệ dữ liệu theo cách nào?","a":["Biến dữ liệu thành dạng khó đọc nếu không có khóa giải mã phù hợp.","Tự động xóa toàn bộ dữ liệu.","Biến mọi website thành shop uy tín.","Thay thế hoàn toàn mật khẩu."],"c":0},{"num":86,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Ba lớp cần được bảo vệ đồng thời trong một giao dịch TMĐT là gì?","a":["Email, ảnh và video.","Máy trạm, kênh truyền và máy chủ.","Kho, cửa hàng và bãi xe.","SEO, quảng cáo và livestream."],"c":1},{"num":87,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Biện pháp nào phù hợp để bảo vệ máy chủ?","a":["Chỉ đổi màu giao diện.","Chỉ cài ứng dụng mua sắm.","Tường lửa, sao lưu dữ liệu, phân quyền và cập nhật bản vá.","Chia sẻ tài khoản quản trị cho nhiều người."],"c":2},{"num":88,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"HTTPS và biểu tượng ổ khóa cho biết điều gì?","a":["Kết nối trên đường truyền được mã hóa, nhưng không phải là bằng chứng tuyệt đối rằng shop uy tín.","Shop chắc chắn không lừa đảo.","Sản phẩm chắc chắn chính hãng.","Website chắc chắn không có mã độc."],"c":0},{"num":89,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Phishing là gì?","a":["Tối ưu SEO.","Hình thức giả mạo để đánh cắp thông tin hoặc dẫn người dùng thực hiện hành động nguy hiểm.","Quản lý tồn kho.","Giao hàng nhanh."],"c":1},{"num":90,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Bạn nhận tin nhắn 'đơn hàng bị lỗi, bấm link để nhận hoàn tiền', tên miền trong link sai một ký tự. Cách xử lý phù hợp nhất là gì?","a":["Bấm ngay để tránh mất tiền.","Chuyển link cho nhiều người thử.","Không bấm; tự mở ứng dụng hoặc trang chính thức để kiểm tra.","Nhập OTP để xác minh."],"c":2},{"num":91,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Một website có HTTPS nhưng thông tin người bán mập mờ và không có chính sách đổi trả. Kết luận nào đúng?","a":["Không thể kết luận website an toàn chỉ vì có HTTPS; cần kiểm tra thêm tên miền, người bán, chính sách và đánh giá.","Chắc chắn an toàn vì có ổ khóa.","Chắc chắn là website chính thức.","Không cần kiểm tra gì thêm."],"c":0},{"num":92,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Tài khoản quan trọng nên được bảo vệ theo cách nào?","a":["Dùng cùng một mật khẩu ngắn ở mọi nơi.","Dùng mật khẩu dài, khó đoán, riêng cho từng dịch vụ quan trọng và bật 2FA/MFA khi có thể.","Chia sẻ mật khẩu cho nhóm lớp.","Dùng ngày sinh làm mật khẩu."],"c":1},{"num":93,"lesson":7,"lessonTitle":"AN NINH TRONG THƯƠNG MẠI ĐIỆN TỬ","q":"Một email lạ yêu cầu bạn nhập đầy đủ thông tin thẻ và OTP qua đường link. Hành động phù hợp nhất là gì?","a":["Làm theo ngay vì email có logo.","Gửi thông tin cho bạn bè kiểm tra.","Nhập thử một OTP.","Không cung cấp thông tin, không bấm link và xác minh qua kênh chính thức."],"c":3},{"num":94,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Công thức lợi nhuận phù hợp nhất là gì?","a":["Doanh thu trừ toàn bộ chi phí.","Doanh thu cộng chi phí.","Chỉ lấy số đơn hàng.","Giá bán nhân lượt xem."],"c":0},{"num":95,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Khoản nào có thể thuộc chi phí đầu tư ban đầu của một dự án TMĐT nhỏ?","a":["Chỉ tiền hoàn đơn hàng tháng.","Chỉ phí vận chuyển từng đơn.","Tên miền, giao diện, thiết bị và chụp ảnh ban đầu.","Chỉ số lượt thích."],"c":2},{"num":96,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"AOV là chỉ số gì?","a":["Số lượt truy cập.","Tỷ lệ hoàn đơn.","Chi phí quảng cáo.","Giá trị đơn hàng trung bình, tính bằng doanh thu chia cho số đơn."],"c":3},{"num":97,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Tỷ lệ chuyển đổi được tính gần nhất theo công thức nào?","a":["Doanh thu / số nhân viên.","Số đơn hoặc hành động mục tiêu / số lượt truy cập phù hợp x 100%.","Số ảnh / số sản phẩm.","Chi phí / số lượt thích."],"c":1},{"num":98,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Theo ví dụ trong bài, doanh thu 45 triệu đồng và tổng chi phí hằng tháng là 40 triệu đồng thì lợi nhuận dự kiến là bao nhiêu?","a":["5 triệu đồng.","20 triệu đồng.","40 triệu đồng.","85 triệu đồng."],"c":0},{"num":99,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Nếu đầu tư ban đầu 20 triệu đồng và lợi nhuận dự kiến 5 triệu đồng/tháng, thời gian hoàn vốn đơn giản khoảng bao lâu?","a":["1 tháng.","2 tháng.","4 tháng.","10 tháng."],"c":2},{"num":100,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Nội dung nào thuộc xây dựng chiến lược phát triển website TMĐT?","a":["Chỉ chọn màu logo.","Xác định mục tiêu, sản phẩm chủ lực, khách hàng mục tiêu, kênh tiếp cận và lộ trình.","Bỏ qua dữ liệu vận hành.","Chỉ tăng số bài đăng."],"c":1},{"num":101,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Quản lý vận hành hoạt động TMĐT bao gồm nội dung nào?","a":["Chỉ mua quảng cáo.","Chỉ đổi tên sản phẩm.","Chỉ thiết kế logo.","Tổ chức quy trình đơn hàng, quản lý nội dung/sản phẩm/khách hàng và theo dõi chỉ số để cải tiến."],"c":3},{"num":102,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Chi phí thu hút khách hàng nên được so sánh với yếu tố nào?","a":["Lợi nhuận, không chỉ với doanh thu.","Chỉ màu giao diện.","Chỉ số lượng ảnh.","Chỉ số người theo dõi cá nhân."],"c":0},{"num":103,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Một shop có doanh thu 100 triệu đồng/tháng nhưng tổng giá vốn và chi phí là 105 triệu đồng. Kết quả kinh doanh là gì?","a":["Lãi 5 triệu đồng.","Hòa vốn.","Lỗ 5 triệu đồng.","Lãi 105 triệu đồng."],"c":2},{"num":104,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Muốn biết trung bình mỗi đơn mang lại bao nhiêu doanh thu, nên theo dõi chỉ số nào?","a":["OTP.","AOV.","SKU.","SSL."],"c":1},{"num":105,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Shop có tỷ lệ hủy/hoàn tăng mạnh dù doanh thu vẫn cao. Hành động phù hợp nhất là gì?","a":["Chỉ khoe doanh thu và bỏ qua hoàn đơn.","Tăng giá mọi sản phẩm ngay.","Xóa dữ liệu hoàn đơn.","Phân tích nguyên nhân từ sản phẩm, mô tả, quy trình giao hàng và dữ liệu vận hành để cải tiến."],"c":3},{"num":106,"lesson":8,"lessonTitle":"KẾ HOẠCH PHÁT TRIỂN THƯƠNG MẠI ĐIỆN TỬ","q":"Khi dự báo doanh thu cho mini business plan, cách làm phù hợp nhất là gì?","a":["Dùng giả định có căn cứ, ghi rõ và tính đủ các nhóm chi phí liên quan.","Chọn con số càng cao càng tốt.","Bỏ qua giá vốn và hoàn đơn.","Không cần nêu giả định."],"c":0},{"num":107,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Theo tài liệu bài giảng, Luật Thương mại điện tử số 122/2025/QH15 có hiệu lực từ ngày nào?","a":["01/01/2026.","01/7/2026.","01/7/2025.","31/12/2026."],"c":1},{"num":108,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Theo tài liệu bài giảng, Nghị định số 248/2026/NĐ-CP có hiệu lực từ ngày nào?","a":["01/01/2027.","30/6/2026.","01/7/2026.","01/01/2026."],"c":2},{"num":109,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Hợp đồng điện tử được hiểu phù hợp nhất là gì?","a":["Thỏa thuận được tạo lập, gửi, nhận hoặc lưu trữ dưới dạng thông điệp dữ liệu.","Chỉ là hợp đồng in giấy rồi chụp ảnh.","Chỉ là hóa đơn thanh toán.","Chỉ là tin nhắn quảng cáo."],"c":0},{"num":110,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Nhóm nào dưới đây có thể được bảo hộ quyền sở hữu trí tuệ trong TMĐT?","a":["Chỉ địa chỉ giao hàng.","Chỉ mã OTP.","Chỉ số dư tài khoản.","Hình ảnh, video, logo, nhạc nền, bài viết và phần mềm."],"c":3},{"num":111,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Nhận định nào đúng về chữ ký số trong hợp đồng điện tử?","a":["Mọi hợp đồng điện tử đều bắt buộc phải có chữ ký số.","Không phải mọi hợp đồng điện tử đều bắt buộc dùng chữ ký số; yêu cầu phụ thuộc loại giao dịch và quy định liên quan.","Hợp đồng điện tử không có giá trị pháp lý.","Chữ ký số chỉ dùng cho mua bán trực tiếp tại cửa hàng."],"c":1},{"num":112,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Điều kiện nào phù hợp để một hợp đồng điện tử có hiệu lực theo nội dung bài học?","a":["Không cần xác định chủ thể tham gia.","Nội dung có thể trái pháp luật nếu hai bên đồng ý.","Các bên có năng lực, tự nguyện; dữ liệu có thể truy cập/lưu giữ/đối chiếu và nội dung giao dịch hợp pháp.","Không cần lưu thông tin giao dịch."],"c":2},{"num":113,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Theo quy định mới nêu trong bài, nền tảng TMĐT trung gian cần làm gì trước khi cho người bán hoạt động?","a":["Xác thực người bán theo quy định.","Bảo đảm mọi shop đều có lãi.","Cấp quảng cáo miễn phí không giới hạn.","Cho phép bán mà không cần thông tin."],"c":0},{"num":114,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Người mua có quyền được biết nhóm thông tin nào?","a":["Mật khẩu người bán.","OTP của nền tảng.","Dữ liệu cá nhân của người mua khác.","Thông tin người bán, hàng hóa, giá, xuất xứ, đổi trả, bảo hành và cách khiếu nại."],"c":3},{"num":115,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Hành vi nào phù hợp với đạo đức trong TMĐT?","a":["Tạo đánh giá ảo để tăng uy tín.","Cung cấp thông tin trung thực và không dùng dữ liệu khách ngoài mục đích đã thông báo.","Thổi phồng công dụng sản phẩm.","Sao chép nội dung rồi nhận là của mình."],"c":1},{"num":116,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Vì sao người mua nên ưu tiên trao đổi và thanh toán trong nền tảng?","a":["Vì luôn rẻ nhất.","Vì không cần kiểm tra hàng.","Vì có cơ chế đối soát, khiếu nại hoặc hỗ trợ tốt hơn khi có vấn đề.","Vì không cần bảo mật tài khoản."],"c":2},{"num":117,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Một KOC nhận hoa hồng nhưng không nói rõ quan hệ quảng bá, dùng ảnh của shop khác và khẳng định sai công dụng. Tình huống này liên quan đến những nhóm vấn đề nào?","a":["Minh bạch quảng bá, sở hữu trí tuệ và quyền lợi người tiêu dùng; có thể liên quan dữ liệu cá nhân tùy cách xử lý dữ liệu.","Chỉ tốc độ website.","Chỉ quản lý tồn kho.","Chỉ giao hàng."],"c":0},{"num":118,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Khách mua hàng giả qua livestream, thanh toán ngoài nền tảng và bị từ chối đổi trả. Hướng xử lý phù hợp nhất theo bài thực hành là gì?","a":["Xóa hết bằng chứng để tránh rắc rối.","Tiếp tục chuyển thêm tiền cho người bán.","Công khai OTP để chứng minh giao dịch.","Lưu bằng chứng, xác định quyền bị ảnh hưởng, liên hệ người bán/nền tảng và cơ quan phù hợp, đồng thời rút kinh nghiệm phòng ngừa."],"c":3},{"num":119,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Một shop lấy ảnh của shop khác, xóa watermark rồi dùng làm ảnh bán hàng mà chưa được phép. Hành vi này có nguy cơ gì?","a":["Tăng tính bảo mật.","Xâm phạm quyền sở hữu trí tuệ.","Tăng khả năng xác thực.","Giảm phí vận chuyển."],"c":1},{"num":120,"lesson":9,"lessonTitle":"QUY ĐỊNH PHÁP LUẬT VỀ THƯƠNG MẠI ĐIỆN TỬ","q":"Mạng xã hội có chức năng TMĐT tổ chức livestream và affiliate nên thực hiện theo hướng nào?","a":["Cho phép tài khoản bán hàng ẩn hoàn toàn danh tính.","Không cần công khai vai trò tiếp thị liên kết.","Nhận diện tài khoản người bán và bảo đảm livestream/affiliate minh bạch, trung thực theo quy định áp dụng.","Chỉ quan tâm số lượt xem."],"c":2}];
+
+const $ = id => document.getElementById(id);
+let selectedMode = '';
+let student = null;
+let className = '';
+let questions = [];
+let currentIdx = 0;
+let answers = [];
+let startTime = 0;
+let timerHandle = null;
+let examDeadline = 0;
+let selectedOptionIndex = null;
+let finished = false;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i=a.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
+  return a;
+}
+function fmtTime(sec) { sec=Math.max(0,Math.round(sec)); const m=Math.floor(sec/60); const s=sec%60; return `${m}:${String(s).padStart(2,'0')}`; }
+function lessonLabel(n) { return `Bài ${n}: ${LESSONS[String(n)].title}`; }
+
+// Populate lesson list
+Object.keys(LESSONS).sort((a,b)=>Number(a)-Number(b)).forEach(n=>{
+  const opt=document.createElement('option'); opt.value=n; opt.textContent=`${lessonLabel(n)} (${LESSONS[n].count} câu)`; $('lesson-select').appendChild(opt);
+});
+
+$('class-select').addEventListener('change', e=>{
+  className=e.target.value; const sel=$('student-select'); sel.innerHTML='';
+  if(!className) { sel.disabled=true; sel.innerHTML='<option value="">-- Chọn lớp trước --</option>'; return; }
+  sel.disabled=false; sel.innerHTML='<option value="">-- Chọn học sinh --</option>';
+  STUDENTS[className].forEach((s,i)=>{ const opt=document.createElement('option'); opt.value=i; opt.textContent=`${s.id} – ${s.name}`; sel.appendChild(opt); });
+});
+
+document.querySelectorAll('.mode-card').forEach(btn=>btn.addEventListener('click',()=>{
+  selectedMode=btn.dataset.mode; $('mode-value').value=selectedMode;
+  document.querySelectorAll('.mode-card').forEach(x=>x.classList.toggle('active',x===btn));
+  $('lesson-field').classList.toggle('hidden', selectedMode!=='lesson');
+}));
+
+$('start-btn').addEventListener('click', startQuiz);
+function startQuiz() {
+  if(!className) return alert('Vui lòng chọn lớp.');
+  const studentIdx=$('student-select').value;
+  if(studentIdx==='') return alert('Vui lòng chọn đúng tên học sinh.');
+  student=STUDENTS[className][Number(studentIdx)];
+  if(!selectedMode) return alert('Vui lòng chọn hình thức ôn tập.');
+
+  if(selectedMode==='lesson') {
+    const ln=Number($('lesson-select').value);
+    if(!ln) return alert('Vui lòng chọn bài muốn ôn.');
+    questions=shuffle(RAW_POOL.filter(q=>q.lesson===ln)).map(prepareQuestion);
+  } else {
+    questions=buildBalancedExam().map(prepareQuestion);
+  }
+  currentIdx=0; answers=[]; startTime=Date.now(); finished=false;
+  $('login-screen').classList.add('hidden'); $('quiz-screen').classList.remove('hidden'); $('progress-wrap').style.display='block';
+  $('student-mini').textContent=`${className} · ${student.id} · ${student.name}`;
+  if(selectedMode==='exam') {
+    examDeadline=Date.now()+60*60*1000; $('timer').classList.remove('hidden'); startTimer();
+  } else $('timer').classList.add('hidden');
+  loadQuestion();
+}
+
+function buildBalancedExam() {
+  // 4 câu từ mỗi bài = 36 câu, cộng 4 câu ngẫu nhiên từ phần còn lại => đủ 40 và phủ cả 9 bài.
+  let picked=[]; let used=new Set();
+  for(let l=1;l<=9;l++) {
+    const part=shuffle(RAW_POOL.filter(q=>q.lesson===l)).slice(0,4);
+    part.forEach(q=>used.add(q.num)); picked.push(...part);
+  }
+  const remainder=shuffle(RAW_POOL.filter(q=>!used.has(q.num))).slice(0,4);
+  return shuffle([...picked,...remainder]);
+}
+
+function prepareQuestion(q) {
+  const opts=shuffle(q.a.map((text,i)=>({text,correct:i===q.c})));
+  return {...q, options:opts};
+}
+
+function startTimer() {
+  clearInterval(timerHandle);
+  const tick=()=>{
+    const left=Math.ceil((examDeadline-Date.now())/1000);
+    $('timer').textContent=fmtTime(left); $('timer').classList.toggle('danger',left<=300);
+    if(left<=0) { clearInterval(timerHandle); finishQuiz(true); }
+  };
+  tick(); timerHandle=setInterval(tick,1000);
+}
+
+function loadQuestion() {
+  selectedOptionIndex=null;
+  const q=questions[currentIdx];
+  $('question-text').textContent=`Câu ${currentIdx+1}. ${q.q}`;
+  $('question-count').textContent=`Câu ${currentIdx+1}/${questions.length}`;
+  $('percent-text').textContent=`${Math.round((currentIdx/questions.length)*100)}%`;
+  $('progress-bar').style.width=`${(currentIdx/questions.length)*100}%`;
+  $('header-mode').textContent=selectedMode==='exam'?'Thi thử 40 câu':`Ôn Bài ${q.lesson}`;
+  $('lesson-badge').textContent=selectedMode==='exam'?'THI THỬ 40 CÂU · 60 PHÚT':lessonLabel(q.lesson);
+  $('feedback').className='feedback'; $('feedback').textContent='';
+  $('next-btn').disabled=true; $('next-btn').textContent=currentIdx===questions.length-1?'NỘP KẾT QUẢ':'TIẾP THEO';
+  const box=$('options'); box.innerHTML='';
+  q.options.forEach((o,i)=>{
+    const b=document.createElement('button'); b.className='opt'; b.type='button';
+    b.innerHTML=`<span class="letter">${'ABCD'[i]}</span><span>${escapeHtml(o.text)}</span>`;
+    b.addEventListener('click',()=>selectOption(i)); box.appendChild(b);
+  });
+}
+
+function escapeHtml(s) { return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
+
+function selectOption(i) {
+  if(selectedMode==='lesson' && answers[currentIdx]) return;
+  selectedOptionIndex=i;
+  const q=questions[currentIdx]; const btns=[...document.querySelectorAll('.opt')];
+  if(selectedMode==='exam') {
+    btns.forEach((b,idx)=>b.classList.toggle('selected',idx===i));
+    $('next-btn').disabled=false; return;
+  }
+  // Study mode: instant feedback and lock the answer.
+  const chosen=q.options[i];
+  btns.forEach(b=>b.disabled=true);
+  if(chosen.correct) {
+    btns[i].classList.add('correct'); $('feedback').className='feedback good'; $('feedback').textContent='✓ Chính xác!';
+  } else {
+    btns[i].classList.add('wrong'); const ci=q.options.findIndex(x=>x.correct); btns[ci].classList.add('correct');
+    $('feedback').className='feedback bad'; $('feedback').textContent=`Chưa đúng. Đáp án đúng: ${'ABCD'[ci]}. ${q.options[ci].text}`;
+  }
+  answers[currentIdx]=makeAnswerRecord(q,i);
+  $('next-btn').disabled=false;
+}
+
+function makeAnswerRecord(q,i) {
+  const chosen=q.options[i]; const correct=q.options.find(x=>x.correct);
+  return {num:q.num, lesson:q.lesson, q:q.q, selected:chosen?chosen.text:'', correct:correct.text, isCorrect:!!(chosen&&chosen.correct)};
+}
+
+$('next-btn').addEventListener('click',()=>{
+  if(finished) return;
+  const q=questions[currentIdx];
+  if(selectedMode==='exam') {
+    if(selectedOptionIndex===null) return;
+    answers[currentIdx]=makeAnswerRecord(q,selectedOptionIndex);
+  }
+  currentIdx++;
+  if(currentIdx<questions.length) loadQuestion(); else finishQuiz(false);
+});
+
+async function finishQuiz(autoSubmit=false) {
+  if(finished) return; finished=true; clearInterval(timerHandle);
+  // Unanswered questions caused by timer are recorded as blank.
+  while(answers.length<questions.length) answers.push(null);
+  const normalized=questions.map((q,i)=>answers[i] || {num:q.num,lesson:q.lesson,q:q.q,selected:'(Chưa trả lời)',correct:q.options.find(x=>x.correct).text,isCorrect:false});
+  answers=normalized;
+  const score=answers.filter(a=>a.isCorrect).length;
+  const total=questions.length; const percent=Math.round(score/total*100); const score10=(score/total*10).toFixed(2);
+  const durationSeconds=Math.round((Date.now()-startTime)/1000);
+  $('quiz-screen').classList.add('hidden'); $('result-screen').classList.remove('hidden'); $('progress-wrap').style.display='none';
+  $('final-score').textContent=`${score}/${total}`;
+  $('final-score10').textContent=`Điểm quy đổi: ${score10}/10 · Đúng ${percent}%`;
+  const lessonText=selectedMode==='lesson'?lessonLabel(Number($('lesson-select').value)):'Thi thử 40 câu / 60 phút';
+  $('result-info').innerHTML=`<div><strong>${escapeHtml(student.name)}</strong> · ${escapeHtml(student.id)} · Lớp ${escapeHtml(className)}</div><div>${escapeHtml(lessonText)}</div><div>Thời gian làm: ${fmtTime(durationSeconds)}${autoSubmit?' · Hết giờ, hệ thống tự nộp bài':''}</div>`;
+  renderReview();
+  await saveResult({name:student.name,score, className, studentId:student.id, studentName:student.name, mode:selectedMode, lesson:selectedMode==='lesson'?Number($('lesson-select').value):'', modeLabel:lessonText, total, percent, score10:Number(score10), durationSeconds, autoSubmit, questionNumbers:questions.map(q=>q.num).join(',')});
+}
+
+function renderReview() {
+  const wrong=answers.filter(a=>!a.isCorrect); const r=$('review');
+  if(!wrong.length) { $('review-btn').textContent='KHÔNG CÓ CÂU SAI 🎯'; $('review-btn').disabled=true; return; }
+  r.innerHTML=`<h3>Các câu cần xem lại (${wrong.length})</h3>`+wrong.map((a,i)=>`<div class="review-item"><strong>${i+1}. ${escapeHtml(a.q)}</strong><div class="bad-txt">Bạn chọn: ${escapeHtml(a.selected)}</div><div class="good-txt">Đúng: ${escapeHtml(a.correct)}</div></div>`).join('');
+}
+$('review-btn').addEventListener('click',()=>{ const r=$('review'); r.style.display=r.style.display==='block'?'none':'block'; $('review-btn').textContent=r.style.display==='block'?'ẨN CÂU SAI':'XEM CÂU SAI'; });
+
+async function saveResult(payload) {
+  const status=$('sync-status');
+  if(!GOOGLE_URL || GOOGLE_URL.includes('YOUR_GOOGLE_SCRIPT')) { status.textContent='⚠ Chưa cấu hình URL Google Apps Script.'; return; }
+  status.textContent='⏳ Đang gửi kết quả về Google Sheet...';
+  try {
+    await fetch(GOOGLE_URL, {method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),keepalive:true});
+    status.textContent='✓ Đã gửi kết quả về Google Sheet.';
+  } catch(err) {
+    console.error(err); status.textContent='⚠ Chưa gửi được kết quả. Kiểm tra mạng hoặc URL Apps Script.';
+  }
+}
+</script>
+</body>
+</html>
